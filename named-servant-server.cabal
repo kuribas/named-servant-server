@@ -1,6 +1,6 @@
 cabal-version: 1.12
 name: named-servant-server
-version: 0.0.1
+version: 0.0.2
 maintainer: kristof@resonata.be
 copyright: Kristof Bastiaensen 2020
 synopsis: server support for named-servant
