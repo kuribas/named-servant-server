@@ -61,13 +61,12 @@ instance ( KnownSymbol sym
     fmap (\f x ->
           case sbool :: SBool (FoldRequired mods) of
            STrue -> case sbool :: SBool (FoldLenient mods) of
-              SFalse -> f (Arg x)
               STrue -> f (Arg x)
+              SFalse -> f (Arg x)
            SFalse -> case sbool :: SBool (FoldLenient mods) of
               STrue -> f (ArgF x)
               SFalse -> f (ArgF x))
     subserver
-    
 
 instance (KnownSymbol sym, HasServer api context)
       => HasServer (NamedQueryFlag sym :> api) context where

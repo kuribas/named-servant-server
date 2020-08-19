@@ -25,4 +25,5 @@ library
         servant >= 0.17 && < 0.18,
         servant-server >= 0.17 && < 0.18,
         named-servant == 0.0.2,
-        named
+        named,
+        text
