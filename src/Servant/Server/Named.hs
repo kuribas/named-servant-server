@@ -68,11 +68,11 @@ instance (KnownSymbol sym, HasServer api context)
       => HasServer (NamedQueryFlag sym :> api) context where
 
   type ServerT (NamedQueryFlag sym :> api) m =
-    sym :! Bool -> ServerT api m
+    sym :? Bool -> ServerT api m
 
   hoistServerWithContext _ pc nt s =
     hoistServerWithContext (Proxy :: Proxy api) pc nt . s
 
   route Proxy context subserver =
     route (Proxy :: Proxy (QueryFlag sym :> api)) context $
-    fmap (\f -> f . Arg) subserver
+    fmap (\f -> f . ArgF . Just) subserver
