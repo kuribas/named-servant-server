@@ -21,24 +21,20 @@ import GHC.TypeLits
 import qualified Data.Text as Text
 import Named
 
-unarg :: NamedF f a name -> f a
-unarg (ArgF a) = a
-
-
 instance ( KnownSymbol sym
          , FromHttpApiData a
          , HasServer api context)
          => HasServer (NamedQueryParams sym a :> api) context where
 
   type ServerT (NamedQueryParams sym a :> api) m =
-    sym :! [a] -> ServerT api m
+    sym :? [a] -> ServerT api m
 
   hoistServerWithContext _ pc nt s =
     hoistServerWithContext (Proxy :: Proxy api) pc nt . s
 
   route Proxy context subserver =
     route (Proxy :: Proxy (QueryParams sym a :> api)) context $
-    fmap (\f x -> f (Arg x)) subserver
+    fmap (\f x -> f (ArgF $ Just x)) subserver
 
 instance ( KnownSymbol sym
          , FromHttpApiData a
